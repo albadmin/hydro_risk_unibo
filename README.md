@@ -19,8 +19,12 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
+This repository contains the source code material for the article entitled "Geomorhpic Flood Hazzard Mapping: from Floodplain Delination to Flood-Hazard Characterization", submitted for possible 
+publication at the Environmental Modelling and Software Journal, Elsevier. Below is reported the abstract so to better contextualize our work.
 
-@Andrea: say something about the project
+
+<i>Recent literature reports on many applications of geomorphic indices retrieved from the analysis of Digital Elevation Models (DEMs) to flood hazard modelling and mapping. DEM-based techniques are generally trained on reference inundation or flood-hazard maps and are nowadays well-established and simpler alternatives to resource-intensive hydrodynamic models for flood hazard mapping. Our study highlights and addresses some limitations of the conventional application of such techniques, which to date are mostly targeting floodplain delineation, contributing to advancing our understanding of how to fully exploit their potential for computationally efficient and geographically consistent characterization of flood hazards across large geographical regions. We focus on three important aspects: (a) the accuracy, availability, and information content of input information (i.e., DEMs and reference flood-hazard maps); (b) how to optimize the efficiency of the computational pipeline and the integration of various software libraries available in the literature when such techniques are applied on large and very large DEMs; (c) how to best profit from the outcome of geomorphic flood hazard assessment. Our results (a) show the remarkable role played by input information; (b) exemplify the huge potential offered by computational pipeline optimization; (c) suggest that geomorphic flood hazard maps using continuous indices (e.g. inundation p-value from decision trees; raw geomorphic index; etc.) should always be preferred to binary flood-hazard map obtained by thresholding the continuous indices themselves (i.e. differentiating between likely and unlikely floodable pixels)</i>
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -29,16 +33,16 @@
 <!-- GETTING STARTED -->
 ## Getting Started
 
-@Andrea: TAUDEM (Gdal + MPI) + Python Libs used
-Say also that the current running example is for MERITDEM only, indicating where to get the EUDEM maps + Watershade
+The code is written in Python leveraging the <u>multiprocessing</u> and other libraries making use of thread/process-safe data structures. 
+Parts of the pipeline (dem_analysis) rely on already available functions based on the <a href="https://github.com/dtarb/TauDEM">TauDEM</a> software suite.
+A direct link on how to install TauDEM and the MPI (Message Passing Interface) support can be consulted <a href="https://github.com/dtarb/TauDEM">here</a>.
 
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-
 The project structure is as follows:
 
-- io: contains... some precomputed, whose algorithmic details are not reported due to ...
+- io: is the I/O directory with necessary... some precomputed, whose algorithmic details are not reported due to ...
 - scripts: containing 
 -- dem_analysis
 -- buffer_area
