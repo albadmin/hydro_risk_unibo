@@ -127,7 +127,7 @@ def geotiff_clipping(input_tiff, output_tiff, shape_file, nodata):
     
 
 # =================================================================================
-# (1) COMPUTE DEPRESSION
+# (1) COMPUTATION OF PITFILLING and FLAT RESOLVING 
 # =================================================================================
 
 
@@ -167,7 +167,7 @@ with rasterio.open(l_demvoid_name) as src:
 
 
 # =================================================================================
-# (2.1) COMPUTE TAUDEM
+# (2.1) COMPUTATION OF D8 FLOW DIRECTION AND ACCUMULATION 
 # =================================================================================
 
 
@@ -201,7 +201,7 @@ if ad8_calculation:
     print(datetime.now().time())
 
 # =================================================================================
-# (2.2) COMPUTE TAUDEM
+# (2.2) POSTPROCESSING of produced files
 # =================================================================================
 
 
@@ -253,18 +253,9 @@ if ad8_calculation:
             dst.write(array2)
     geotiff_clipping(l_fel_name,l_fel_name, watershed_shape,-9999)
 
-
-# In[14]:
-
-
 # =================================================================================
-# (2.3) COMPUTE TAUDEM
+# (2.3) COMPUTE DISTANCE FROM RIVER 
 # =================================================================================
-
-
-
-# In[16]:
-
 
 if D_calculation:
     print("---->D_calculation")
@@ -302,11 +293,9 @@ if D_calculation:
                 dst.write(array2)
     geotiff_clipping(l_D, l_D, watershed_shape,-9999)
 
-
 # =================================================================================
 # (2.4) COMPUTATION OF HAND: opening needed files
 # =================================================================================
-
 
 if hand_comp: 
     print("----> hand_comp")
@@ -332,10 +321,14 @@ if hand_comp:
     print("---> hand_comp finished opening files")
     print(datetime.now().time())
 
+# =================================================================================
+# (2) COMPUTE RIVER NETWORK with algorithm from Giannoni et al., 2005
+# =================================================================================
 
-# =================================================================================
-# (2) COMPUTE RNET
-# =================================================================================
+# Minor part of the algorithm has been intentionally left out, due to IPR compliance
+# clauses. This is the part for memorize already visited pixels along flow 
+# direction, as described in Section 6.1 of the manuscript "MORPHIC FLOOD HAZARD 
+# MAPPING: FROM FLOODPLAIN DELINEATION TO FLOOD-HAZARD CHARACTERIZATION"
 
 
 if hand_comp: 
@@ -529,8 +522,11 @@ if hand_comp:
     print("---> hand_comp: loading hand index")
     print(datetime.now().time())
 
-    #Algorithm was intentionally left out; loading a precomputed hand index. 
-    #For information on the ... please refer to [1]
+    # Algorithm was intentionally left out, due to IPR compliance clauses; 
+    # loading a precomputed HAND index. 
+    # For information on the computation please refer to Section 2.1 of the 
+    # manuscript "MORPHIC FLOOD HAZARD MAPPING: FROM FLOODPLAIN DELINEATION 
+    # TO FLOOD-HAZARD CHARACTERIZATION"
     with rasterio.open(hand_name) as src:
         H = src.read(1)
         profile = src.profile    
@@ -543,9 +539,11 @@ if hand_comp:
     
     print("loading h/hnet auxiliary matrix")
     
-    #Algorithm was intentionally left out; loading a precomputed auxiliary matrix. 
-    #For information on the ... please refer to [1]
-    with rasterio.open(auxiliary_hnet_matrix) as src:
+    # Algorithm was intentionally left out, due to IPR compliance clauses; 
+    # loading a precomputed water depth h. 
+    # For information on the computation please refer to Section 2.1 of the 
+    # manuscript "MORPHIC FLOOD HAZARD MAPPING: FROM FLOODPLAIN DELINEATION 
+    # TO FLOOD-HAZARD CHARACTERIZATION"    with rasterio.open(auxiliary_hnet_matrix) as src:
         h = src.read(1)
         profile = src.profile    
 
@@ -553,20 +551,15 @@ if hand_comp:
 # (10) COMPUTATION OF GFI
 # =================================================================================
 
-#Armir: we can leave this function. The 'h' and 'H' loaded previously are needed.
-
 if hand_comp: 
     gfi = np.log(np.divide(h, H))
     
     with rasterio.open(gfi_name, 'w', **meta) as src:
         src.write(gfi, 1)
 
-
 # =================================================================================
 # (11) COMPUTATION OF LGFI
 # =================================================================================
-
-#Armir: we can leave this function. The 'H' loaded previously is needed.
 
 if hand_comp: 
     # Opening needed input files
