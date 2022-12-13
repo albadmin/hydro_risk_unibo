@@ -543,7 +543,8 @@ if hand_comp:
     # loading a precomputed water depth h. 
     # For information on the computation please refer to Section 2.1 of the 
     # manuscript "MORPHIC FLOOD HAZARD MAPPING: FROM FLOODPLAIN DELINEATION 
-    # TO FLOOD-HAZARD CHARACTERIZATION"    with rasterio.open(auxiliary_hnet_matrix) as src:
+    # TO FLOOD-HAZARD CHARACTERIZATION"    
+    with rasterio.open(auxiliary_hnet_matrix) as src:
         h = src.read(1)
         profile = src.profile    
 
